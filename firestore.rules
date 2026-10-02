@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isHost() {
+      return signedIn()
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() == "nanigokula45@gmail.com";
+    }
+
+    // EVENTS: anyone logged in can read; ONLY HOST can create/update.
+    // DELETE IS NEVER ALLOWED.
+    match /events/{eventId} {
+      allow read: if signedIn();
+      allow create, update: if isHost();
+      allow delete: if false;
+    }
+
+    // REGISTRATIONS: participants can create their own record.
+    // Host can read all records; participant can read only their own.
+    // No one can delete or update records.
+    match /registrations/{registrationId} {
+      allow create: if signedIn()
+        && request.resource.data.participantUid == request.auth.uid
+        && request.resource.data.participantEmail == request.auth.token.email;
+      allow read: if isHost()
+        || (signedIn() && resource.data.participantUid == request.auth.uid);
+      allow update, delete: if false;
+    }
+  }
+}
