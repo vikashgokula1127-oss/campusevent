@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Event Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div><h1>Campus Event Management</h1><p>Events • Participation • Records</p></div>
+  <div id="userArea"></div>
+</header>
+
+<main class="container">
+  <section id="authCard" class="card auth-card">
+    <h2>Login / Register</h2>
+    <p class="muted">Participants can register. Only the Host can create events.</p>
+    <form id="authForm">
+      <input id="email" type="email" placeholder="Email" required>
+      <input id="password" type="password" placeholder="Password" minlength="6" required>
+      <button type="submit">Login</button>
+    </form>
+    <button id="registerBtn" class="secondary">Create participant account</button>
+    <p id="authMsg" class="msg"></p>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="tabs">
+      <button class="tab active" data-tab="eventsTab">Events</button>
+      <button class="tab" data-tab="participateTab">My Participation</button>
+      <button id="hostTabBtn" class="tab hidden" data-tab="hostTab">Host Panel</button>
+    </div>
+
+    <section id="eventsTab" class="tabPanel">
+      <div class="section-head">
+        <div><h2>Available Events</h2><p class="muted">Events are created only by the Host.</p></div>
+        <button id="refreshEvents" class="secondary">Refresh</button>
+      </div>
+      <div id="eventsList" class="grid"></div>
+    </section>
+
+    <section id="participateTab" class="tabPanel hidden">
+      <h2>My Participation</h2>
+      <div id="myRegistrations" class="grid"></div>
+    </section>
+
+    <section id="hostTab" class="tabPanel hidden">
+      <div class="section-head">
+        <div><h2>Host Panel</h2><p class="muted">Only the configured Host can create events and view all registrations.</p></div>
+      </div>
+
+      <div class="card">
+        <h3>Create Event</h3>
+        <form id="eventForm" class="form-grid">
+          <input id="eventTitle" placeholder="Event title" required>
+          <input id="eventDate" type="date" required>
+          <input id="eventVenue" placeholder="Venue" required>
+          <input id="eventCapacity" type="number" min="1" placeholder="Capacity" required>
+          <textarea id="eventDescription" placeholder="Description" required></textarea>
+          <button type="submit">Create Event</button>
+        </form>
+        <p id="eventMsg" class="msg"></p>
+      </div>
+
+      <div class="card">
+        <h3>All Participation Records</h3>
+        <div id="allRegistrations" class="tableWrap"></div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div id="modal" class="modal hidden">
+  <div class="modalBox">
+    <button id="closeModal" class="close">×</button>
+    <h2 id="modalTitle">Register</h2>
+    <form id="registrationForm">
+      <input id="regName" placeholder="Full name" required>
+      <input id="regRoll" placeholder="Roll number" required>
+      <input id="regDepartment" placeholder="Department / Branch" required>
+      <input id="regPhone" placeholder="Phone number" required>
+      <input id="regEventId" type="hidden">
+      <button type="submit">Confirm Participation</button>
+    </form>
+    <p id="regMsg" class="msg"></p>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
